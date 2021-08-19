@@ -19,7 +19,7 @@ jobs:
           name: query aws for the last deployment id
           command: |
             aws cloudformation list-exports --query "Exports[?Name==\'PipelineID\'].Value" --no-paginate --output text > lastID.txt
-      - persist_workspace:
+      - persist_to_workspace:
           root: ~/
           paths: [lastID.txt]
 
@@ -37,7 +37,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      - attach_to_workspace:
+      - attach_workspace:
           at: ~/
       - run:
           name: delete all files from old bucket and itself, then delete old cloudformation stack
